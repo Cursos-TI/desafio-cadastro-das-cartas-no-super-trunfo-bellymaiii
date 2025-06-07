@@ -5,10 +5,10 @@
 
 typedef struct {
     char estado;
-    char codigo[4];
+    char codigo[5];
     char nome[50];
     char cidade[25];
-    unsigned long int populaçao;
+    unsigned long int populacao;
     float area;
     float PIB;
     int pontos_Turisticos;
@@ -21,18 +21,18 @@ typedef struct {
 void calcularAtributosDerivados(Cidade* c){
     
     if (c->area > 0){
-        c->densidade_Populacional = (float) c->populaçao / c->area;
+        c->densidade_Populacional = (float) c->populacao / c->densidade_Populacional ;
     } else {
         c->densidade_Populacional = 0.0f;
     }
 
-    if (c->populaçao > 0){
-        c->PIB_Percapita = c->PIB / (float) c->populaçao;
+    if (c->populacao> 0){
+        c->PIB_Percapita = c->PIB / (float) c->populacao;
     } else {
         c->PIB_Percapita = 0.0f;
     }
 
-    c->super_Poder = (float) c->populaçao + c->area + c->PIB + (float) c->pontos_Turisticos + c->pontos_Turisticos + c->PIB_Percapita;
+    c->super_Poder = (float) c->populacao+ c->area + c->PIB + (float) c->pontos_Turisticos + c->pontos_Turisticos + c->PIB_Percapita;
 
     if (c->densidade_Populacional > 0.0f){
         c->super_Poder += (1.0f / c->densidade_Populacional);
@@ -50,17 +50,17 @@ void cadastrarCidade(Cidade* c, int numero_Carta){
     printf("digite o codigo da carta (ex: B02):");
     scanf("%s", c->codigo);
 
-    while (getcher() != '\n');
+    while (getchar() != '\n');
     printf("digite o nome da cidade:");
     fgets(c->nome, sizeof(c->nome), stdin);
     
     c->nome [strcspn(c->nome, "\n")] = '\0';
 
-    printf("digite a populaçao:");
-    scanf("%lu, &c->populaçao");
+    printf("digite a populacao:");
+    scanf("%lu", &c->populacao);
 
     printf("digite a area(em km):");
-    scanf("%f, &c->area");
+    scanf("%f", &c->area);
 
     printf("digite o PIB:");
     scanf("%f", &c->PIB);
@@ -77,9 +77,9 @@ void exibirCidade(const Cidade* c, int numero_Carta){
     printf("estado: %c \n", c->estado);
     printf("codigo: %s \n", c->codigo);
     printf("nome da cidade: %s \n", c->nome);
-    printf("populaçao: %lu \n", c->populaçao);
+    printf("populacao: %lu \n", c->populacao);
     printf("area: %.2f km \n", c->area);
-    prinft("PIB: %.2f bilhoes de reais \n", c->PIB);
+    printf("PIB: %.2f 1 bilhao de reais \n", c->PIB);
     printf("numero de pontos turisticos: %d \n", c->pontos_Turisticos);
     printf("densidade populacional: %.2f hab/km \n", c->densidade_Populacional);
     printf("PIB Percapita: %.2f reais \n", c->PIB_Percapita);
@@ -166,7 +166,7 @@ int compararAtributo(const char* nome_Atributo, float valor1, float valor2, int 
 
         printf("\n--- comparaçao de cartas ---\n");
 
-        compararAtributosUlong("populaçao", carta1.populaçao, carta2.populaçao, 1);
+        compararAtributosUlong("populacao", carta1.populacao, carta2.populacao, 1);
         compararAtributo("area", carta1.area, carta2.area, 1);
         compararAtributo("PIB", carta1.PIB, carta2.PIB, 1);
         compararAtributoint("pontos turisticos", carta1.pontos_Turisticos, carta2.pontos_Turisticos, 1);
@@ -174,11 +174,11 @@ int compararAtributo(const char* nome_Atributo, float valor1, float valor2, int 
         compararAtributo("PIB Percapita", carta1.PIB_Percapita, carta2.PIB_Percapita, 1);
         compararAtributo("super poder", carta1.super_Poder, carta2.super_Poder, 1);
 
-        printf("\n fim da comparaçao. \n");
+        printf("\n fim da comparacao.\n");
 
         return 0;
     }
-            
+
         
     
         
