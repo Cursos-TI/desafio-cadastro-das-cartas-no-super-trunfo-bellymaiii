@@ -1,22 +1,188 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
-// Desafio Super Trunfo - Países
-// Tema 1 - Cadastro das Cartas
-// Este código inicial serve como base para o desenvolvimento do sistema de cadastro de cartas de cidades.
-// Siga os comentários para implementar cada parte do desafio.
-//Teste larissa
+typedef struct {
+    char estado;
+    char codigo[4];
+    char nome[50];
+    char cidade[25];
+    unsigned long int populaçao;
+    float area;
+    float PIB;
+    int pontos_Turisticos;
+    float densidade_Populacional;
+    float PIB_Percapita;
+    float super_Poder;
 
-int main() {
-    // Sugestão: Defina variáveis separadas para cada atributo da cidade.
-    // Exemplos de atributos: código da cidade, nome, população, área, PIB, número de pontos turísticos.
+} Cidade;
+
+void calcularAtributosDerivados(Cidade* c){
     
-    // Cadastro das Cartas:
-    // Sugestão: Utilize a função scanf para capturar as entradas do usuário para cada atributo.
-    // Solicite ao usuário que insira as informações de cada cidade, como o código, nome, população, área, etc.
-    
-    // Exibição dos Dados das Cartas:
-    // Sugestão: Utilize a função printf para exibir as informações das cartas cadastradas de forma clara e organizada.
-    // Exiba os valores inseridos para cada atributo da cidade, um por linha.
+    if (c->area > 0){
+        c->densidade_Populacional = (float) c->populaçao / c->area;
+    } else {
+        c->densidade_Populacional = 0.0f;
+    }
 
-    return 0;
+    if (c->populaçao > 0){
+        c->PIB_Percapita = c->PIB / (float) c->populaçao;
+    } else {
+        c->PIB_Percapita = 0.0f;
+    }
+
+    c->super_Poder = (float) c->populaçao + c->area + c->PIB + (float) c->pontos_Turisticos + c->pontos_Turisticos + c->PIB_Percapita;
+
+    if (c->densidade_Populacional > 0.0f){
+        c->super_Poder += (1.0f / c->densidade_Populacional);
+    }
 }
+
+void cadastrarCidade(Cidade* c, int numero_Carta){
+    printf("\n--- cadastro da carta %d ---\n", numero_Carta);
+
+    printf("digite o estado (uma letra de A a H):");
+    scanf("%c", &c->estado);
+
+    c->estado = toupper (c->estado);
+
+    printf("digite o codigo da carta (ex: B02):");
+    scanf("%s", c->codigo);
+
+    while (getcher() != '\n');
+    printf("digite o nome da cidade:");
+    fgets(c->nome, sizeof(c->nome), stdin);
+    
+    c->nome [strcspn(c->nome, "\n")] = '\0';
+
+    printf("digite a populaçao:");
+    scanf("%lu, &c->populaçao");
+
+    printf("digite a area(em km):");
+    scanf("%f, &c->area");
+
+    printf("digite o PIB:");
+    scanf("%f", &c->PIB);
+
+    printf("digite o numero de pontos turisticos:");
+    scanf("%d", &c->pontos_Turisticos);
+
+    calcularAtributosDerivados(c);
+}
+
+void exibirCidade(const Cidade* c, int numero_Carta){
+    printf("\n--- carta %d ---\n", numero_Carta);
+
+    printf("estado: %c \n", c->estado);
+    printf("codigo: %s \n", c->codigo);
+    printf("nome da cidade: %s \n", c->nome);
+    printf("populaçao: %lu \n", c->populaçao);
+    printf("area: %.2f km \n", c->area);
+    prinft("PIB: %.2f bilhoes de reais \n", c->PIB);
+    printf("numero de pontos turisticos: %d \n", c->pontos_Turisticos);
+    printf("densidade populacional: %.2f hab/km \n", c->densidade_Populacional);
+    printf("PIB Percapita: %.2f reais \n", c->PIB_Percapita);
+    printf("super poder: %.2f \n", c->super_Poder);
+}
+
+int compararAtributo(const char* nome_Atributo, float valor1, float valor2, int maior_vence){
+    printf("%s:", nome_Atributo);
+    if (maior_vence){
+        if (valor1 > valor2){
+            printf("carta 1 venceu (1) \n");
+            return 1;
+        } else {
+            printf("carta 2 venceu (0) \n");
+            return 0;
+        }  
+    } else {
+        if (valor1 < valor2){
+            printf("carta 1 venceu (1) \n");
+            return 1;
+            } else{
+                printf("carta 2 venceu (0) \n");
+                return 0;
+            }
+        
+       }
+
+    }
+
+
+    int compararAtributoint(const char* nome_Atributo, int valor1, int valor2, int maior_vence){
+        printf("%sd:", nome_Atributo);
+        if (maior_vence){
+            if (valor1 >valor2){
+                printf("carta 1 venceu (1) \n");
+                return 1;
+            } else {
+                printf("carta 2 venceu (0) \n");
+                return 0;
+            }
+        } else {
+            if (valor1 < valor2){
+                printf("carta 1 venceu (1) \n");
+                return 1;
+            } else {
+                printf("carta 2 venceu (0) \n");
+                return 0;
+            }
+        }
+    }
+
+    int compararAtributosUlong(const char* nome_Atributo, unsigned long int valor1, unsigned long int valor2, int maior_vence){
+        printf("%s:", nome_Atributo);
+
+        if (maior_vence){
+            if(valor1 > valor2){
+                printf("carta 1 venceu (1) \n");
+                return 1;
+
+            } else {
+                printf("carta 2 venceu (0) \n");
+                return 0;
+            }
+        } else {
+            if (valor1 < valor2){
+                printf("carta 1 venceu (1) \n");
+                return 1;
+
+            } else {
+                printf("carta 2 venceu (0) \n");
+                return 0;
+            }
+        }
+    }
+
+    int main(){
+        Cidade carta1;
+        Cidade carta2;
+
+        cadastrarCidade(&carta1, 1);
+        cadastrarCidade(&carta2, 2);
+
+        exibirCidade(&carta2, 2);
+
+        printf("\n--- comparaçao de cartas ---\n");
+
+        compararAtributosUlong("populaçao", carta1.populaçao, carta2.populaçao, 1);
+        compararAtributo("area", carta1.area, carta2.area, 1);
+        compararAtributo("PIB", carta1.PIB, carta2.PIB, 1);
+        compararAtributoint("pontos turisticos", carta1.pontos_Turisticos, carta2.pontos_Turisticos, 1);
+        compararAtributo("densidade populacional", carta1.densidade_Populacional, carta2.densidade_Populacional, 0);
+        compararAtributo("PIB Percapita", carta1.PIB_Percapita, carta2.PIB_Percapita, 1);
+        compararAtributo("super poder", carta1.super_Poder, carta2.super_Poder, 1);
+
+        printf("\n fim da comparaçao. \n");
+
+        return 0;
+    }
+            
+        
+    
+        
+    
+    
+
+
